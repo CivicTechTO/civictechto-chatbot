@@ -96,8 +96,9 @@ module.exports = (robot) ->
     [user] = all_users.filter (u) -> u.name = username
     if user
       data =
-        name: user.name
-        email: user.email
+        username: user.name
+        name: user.profile.real_name
+        email: user.profile.email
         event: event
         cfapi_url: "https://www.codeforamerica.org/api/organizations/#{config.brigade_id}"
 
