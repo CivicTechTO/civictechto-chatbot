@@ -81,7 +81,7 @@ module.exports = (robot) ->
 
     checkinUsers(usernames, event, (err, success) ->
       if success?
-        res.send "Successfully logged users into to '#{event}'!"
+        res.send "Successfully logged user(s) into to '#{event}'!"
       else
         res.send "Oops! Something went wrong..."
     )
@@ -93,7 +93,7 @@ module.exports = (robot) ->
 
 
   checkinUser = (username, all_users, event, cb) ->
-    [user] = all_users.filter (u) -> u.name = username
+    [user] = all_users.filter (u) -> u.name == username
     if user
       data =
         username: user.name
