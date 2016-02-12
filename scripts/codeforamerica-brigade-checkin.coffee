@@ -101,6 +101,7 @@ module.exports = (robot) ->
         event: event
         cfapi_url: "https://www.codeforamerica.org/api/organizations/#{config.brigade_id}"
 
+      console.log "Brigade event checkin data: #{data}"
       cfa.checkin(data, cb)
     else
       res.send "Error!"
