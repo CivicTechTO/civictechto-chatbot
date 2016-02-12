@@ -70,8 +70,8 @@ slack = new Slack
 cfa = new CFA
 
 module.exports = (robot) ->
-  robot.respond /checkin(( @[-_\w]+)+)?( .+)?/, (res) ->
-    [usernames, _, event] = res.match[1..4].map (m) -> m.trim() if m
+  robot.respond /checkin(( @[-_\w]+)+)?( (.+))?$/, (res) ->
+    [usernames, _, _, event] = res.match[1..4].map (m) -> m.trim() if m
     calling_username = res.message.user.name
 
     usernames = usernames or calling_username
