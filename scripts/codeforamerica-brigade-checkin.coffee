@@ -11,120 +11,95 @@
 HttpClient = require 'scoped-http-client'
 querystring = require 'querystring'
 
+defaults =
+  event: process.env.HUBOT_CFA_CHECKIN_DEFAULT_EVENT or 'Weekly Civic Hack Night'
+
+config =
+  slack_api_token: process.env.HUBOT_SLACK_API_TOKEN
+  brigade_slug: process.env.HUBOT_CFA_BRIGADE_SLUG or 'test-checkin'
+
+class Slack
+  http: (method) ->
+    slackBaseUrl = 'https://slack.com/api/'
+    HttpClient.create("#{slackBaseUrl}#{method}")
+      .query(token: config.slack_api_token)
+      .headers(Accept: 'application/json')
+
+  get: (method, cb) ->
+    @http(method)
+      .get() (err, res, body) ->
+        if err?
+          cb(err)
+          return
+        json_body = null
+        switch res.statusCode
+          when 200 then json_body = JSON.parse(body)
+          else
+            console.log "Error!"
+
+        cb json_body
+
+  users: (cb) ->
+    @get('users.list', cb)
+
+class CFA
+  http: (method) ->
+    cfaBaseUrl = "https://www.codeforamerica.org/brigade/#{config.brigade_slug}"
+    HttpClient.create("#{cfaBaseUrl}#{method}/")
+      .headers(Accept: 'application/x-www-form-urlencoded')
+
+  post: (method, data, cb) ->
+    form_data = querystring.stringify(data)
+    @http(method)
+      .post(form_data) (err, res, body) ->
+        if err?
+          return cb(err)
+
+        switch res.statusCode
+          when not 302
+            console.log "Error!"
+
+        cb()
+
+  checkin: (data, cb) ->
+    @post('checkin', data, cb)
+
+slack = new Slack
+cfa = new CFA
 
 module.exports = (robot) ->
-
-  defaults =
-    event: process.env.HUBOT_CFA_CHECKIN_DEFAULT_EVENT or 'Weekly Civic Hack Night'
-
-  config =
-    slack_api_token: process.env.HUBOT_SLACK_API_TOKEN
-    brigade_slug: process.env.HUBOT_CFA_BRIGADE_SLUG or 'test-checkin'
-
   robot.respond /checkin(( @[-_\w]+)+)?( .+)?/, (res) ->
     [usernames, _, event] = res.match[1..4].map (m) -> m.trim() if m
     calling_username = res.message.user.name
 
     usernames = usernames or calling_username
-    event = event or defaults.event or null
+    event = event or defaults.event
 
     usernames = (u.trim().replace('@', '') for u in usernames.split ' ')
 
-    users = usernames.map (username) -> getSlackUsers().filter (u) -> u.username = username
+    checkinUsers(usernames, event)
 
-    checkinUser(user, event) for user in users
-
-    res.send "username #{usernames}. event: #{event}."
-
-  getSlackApiResponse = api_method, cb ->
-    robot.http("https://slack.com/api/#{api_method}?token=#{config.slack_api_token}")
-      .get() (err, res, body) ->
-        if err
-          res.send "Encountered an error using Slack API: #{err}"
-          return
-        else
-          data = JSON.parse body
-
-  getSlackUsers = ->
-    data = getSlackApiResponse('users.list')
-    console.log data
-    users = ({username: user.name, email: user.profile.email, name: user.profile.real_name} for user in data.members)
-    return users
-
-  checkinUser = (user, event) ->
-    data =
-      name: user.name
-      email: user.email
-      event: event
-      cfapi_url: "https://www.codeforamerica.org/api/organizations/#{config.brigade_slug}"
-
-    robot.http("https://www.codeforamerica.org/brigade/#{config.brigade_slug}/checkin")
-      .header('Content-Type', 'application/json')
-      .post(data) (err, res, body) ->
-        if err
-          res.send "Encountered an error using Slack API: #{err}"
-          return
-        else
-          robot.send "Successful checked in #{user.username} to '#{event}'!"
-
-  class Slack
-    http: (method) ->
-      slackBaseUrl = 'https://slack.com/api/'
-      HttpClient.create("#{slackBaseUrl}#{method}")
-        .query(token: config.slack_api_token)
-        .headers(Accept: 'application/json')
-
-    get: (method, cb) ->
-      @http(method)
-        .get() (err, res, body) ->
-          if err?
-            cb(err)
-            return
-          json_body = null
-          switch res.statusCode
-            when 200 then json_body = JSON.parse(body)
-            else
-              console.log "Error!"
-
-          cb null, json_body
-
-  class CFA
-    http: (method) ->
-      cfaBaseUrl = "https://www.codeforamerica.org/brigade/#{config.brigade_slug}"
-      HttpClient.create("#{cfaBaseUrl}#{method}/")
-        .headers(Accept: 'application/x-www-form-urlencoded')
-
-    post: (method, data, cb) ->
-      form_data = querystring.stringify(data)
-      @http(method)
-        .post(form_data) (err, res, body) ->
-          if err?
-            return cb(err)
-
-          switch res.statusCode
-            unless 302
-              console.log "Error!"
-
-          cb()
-
-    checkin: (data, cb) ->
-      @post('checkin', data, cb)
+  checkinUsers = (usernames, event) ->
+    slack.users (slack_users) ->
+      all_users = slack_users.members
+      success = checkinUser(username, all_users, event, cb) for username in usernames
 
 
-  slackCheckinPost = (msg, data, cb) ->
-    json = JSON.stringify(data)
-    msg.http("https://www.codeforamerica.org/brigade/#{config.brigade_slug}/checkin")
-      .header('Content-Type', 'application/json')
-      .post(json) (err, res, body) ->
-        switch res.statusCode
-          when 200
-            json = JSON.parse(body)
-            cb(json)
-          else
-            console.log res.statusCode
-            console.log body
+  checkinUser = (username, all_users, event, cb) ->
+    [user] = all_users.filter (u) -> u.name = username
+    if user
+      data =
+        name: user.name
+        email: user.email
+        event: event
+        cfapi_url: "https://www.codeforamerica.org/api/organizations/#{config.brigade_slug}"
 
+      cfa.checkin(data, cb)
+    else
+      res.send "Error!"
 
+  noop = ->
+    return true
 
   # robot.hear /badger/i, (res) ->
   #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
