@@ -7,7 +7,7 @@
 #   HUBOT_CFA_CHECKIN_DEFAULT_EVENT - Default event name when unspecified. Default: Civic Hack Night. (optional)
 #
 # Commands:
-#   hubot checkin [@<user1> ..] [<event name>] - check into a brigade event. (user defaults to speaker.)
+#   hubot checkin [@<user1> [...]] [<event name>] - check into a brigade event. (user defaults to speaker.)
 #
 
 HttpClient = require 'scoped-http-client'
