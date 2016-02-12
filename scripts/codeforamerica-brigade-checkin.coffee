@@ -61,7 +61,7 @@ class CFA
           when not 302
             console.log "Error!"
 
-        cb(null, true)
+        return cb(null, true, data.username)
 
   checkin: (data, cb) ->
     @post('checkin', data, cb)
@@ -79,18 +79,17 @@ module.exports = (robot) ->
 
     usernames = (u.trim().replace('@', '') for u in usernames.split ' ')
 
-    checkinUsers(usernames, event, (err, success) ->
+    checkinUsers(usernames, event, (err, success, username) ->
       if success?
-        res.send "Successfully logged user(s) into to '#{event}'!"
+        res.send "Successfully checked #{username} into '#{event}'!"
       else
-        res.send "Oops! Something went wrong..."
+        res.send "Oops! Something went wrong checking #{username} into '#{event}'..."
     )
 
   checkinUsers = (usernames, event, cb) ->
     slack.users (slack_users) ->
       all_users = slack_users.members
-      success = checkinUser(username, all_users, event, cb) for username in usernames
-
+      checkinUser(username, all_users, event, cb) for username in usernames
 
   checkinUser = (username, all_users, event, cb) ->
     [user] = all_users.filter (u) -> u.name == username
