@@ -1,4 +1,5 @@
 [
+  "hubot-cfa-brigade-checkin",
   "hubot-help",
   "hubot-heroku-keepalive"
 ]
