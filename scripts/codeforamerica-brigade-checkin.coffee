@@ -81,7 +81,7 @@ module.exports = (robot) ->
 
     checkinUsers(usernames, event, (err, success) ->
       if success?
-        res.send "Successfully logged in users to '#{event}'!"
+        res.send "Successfully logged users into to '#{event}'!"
       else
         res.send "Oops! Something went wrong..."
     )
