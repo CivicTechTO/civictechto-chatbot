@@ -2,9 +2,9 @@
 #   A hubot script that allows checkins to Code for America brigade events from Slack.
 #
 # Configuration:
-#   HUBOT_SLACK_TOKEN           - Required for fetching email/name of Slack users.
-#   HUBOT_CFA_BRIGADE_SLUG          - Required machine name of brigade, ie. `id` key in http://codeforamerica.org/api/organizations?q=My+City (optional)
-#   HUBOT_CFA_CHECKIN_DEFAULT_EVENT - Default event name when unspecified. Default: Weekly Civic Hack Night. (optional)
+#   HUBOT_SLACK_TOKEN               - Required for fetching email/name of Slack users.
+#   HUBOT_CFA_BRIGADE_ID            - Required brigade ID from CfA API: http://codeforamerica.org/api/organizations?q=My+City
+#   HUBOT_CFA_CHECKIN_DEFAULT_EVENT - Default event name when unspecified. Default: Civic Hack Night. (optional)
 #
 # Commands:
 #   hubot checkin [@<user1> ..] [<event name>] - check into a brigade event. (user defaults to speaker.)
@@ -14,11 +14,11 @@ HttpClient = require 'scoped-http-client'
 querystring = require 'querystring'
 
 defaults =
-  event: process.env.HUBOT_CFA_CHECKIN_DEFAULT_EVENT or 'Weekly Civic Hack Night'
+  event: process.env.HUBOT_CFA_CHECKIN_DEFAULT_EVENT or 'Civic Hack Night'
 
 config =
   slack_api_token: process.env.HUBOT_SLACK_TOKEN
-  brigade_slug: process.env.HUBOT_CFA_BRIGADE_SLUG or 'test-checkin'
+  brigade_id: process.env.HUBOT_CFA_BRIGADE_ID or 'test-checkin'
 
 class Slack
   http: (method) ->
@@ -46,7 +46,7 @@ class Slack
 
 class CFA
   http: (method) ->
-    cfaBaseUrl = "https://www.codeforamerica.org/brigade/#{config.brigade_slug}"
+    cfaBaseUrl = "https://www.codeforamerica.org/brigade/#{config.brigade_id}"
     HttpClient.create("#{cfaBaseUrl}#{method}/")
       .headers(Accept: 'application/x-www-form-urlencoded')
 
@@ -99,7 +99,7 @@ module.exports = (robot) ->
         name: user.name
         email: user.email
         event: event
-        cfapi_url: "https://www.codeforamerica.org/api/organizations/#{config.brigade_slug}"
+        cfapi_url: "https://www.codeforamerica.org/api/organizations/#{config.brigade_id}"
 
       cfa.checkin(data, cb)
     else
