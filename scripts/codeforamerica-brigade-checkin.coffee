@@ -20,6 +20,13 @@ config =
   slack_api_token: process.env.HUBOT_SLACK_TOKEN
   brigade_id: process.env.HUBOT_CFA_BRIGADE_ID or 'test-checkin'
 
+# Add some syntactic sugar
+String::capitalize = ->
+  (
+    this.split(/\s+/).map (word) ->
+      word[0].toUpperCase() + word[1..-1].toLowerCase()
+  ).join ' '
+
 class Slack
   http: (method) ->
     slackBaseUrl = 'https://slack.com/api/'
