@@ -1,5 +1,6 @@
 [
   "hubot-cfa-brigade-checkin",
   "hubot-giphy-gifme",
-  "hubot-help"
+  "hubot-help",
+  "hubot-redis-brain"
 ]
