@@ -2,6 +2,5 @@
   "hubot-cfa-brigade-checkin",
   "hubot-factoids",
   "hubot-giphy-gifme",
-  "hubot-help",
-  "hubot-heroku-keepalive"
+  "hubot-help"
 ]
