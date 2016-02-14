@@ -2,5 +2,6 @@
   "hubot-cfa-brigade-checkin",
   "hubot-giphy-gifme",
   "hubot-help",
+  "hubot-heroku-keepalive",
   "hubot-redis-brain"
 ]
