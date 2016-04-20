@@ -7,3 +7,5 @@ module.exports = (robot) ->
 
     robot.messageRoom room, "@channel there's someone at the door!"
     robot.messageRoom room, "#{from} says \"#{message}\""
+
+    res.send 'ok'
