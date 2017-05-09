@@ -39,7 +39,7 @@ module.exports = (robot) ->
       sayResults = (data) ->
         if data.length > 0
           res.send "Found public Reddit threads:"
-          for d in _.sortBy(data, (datum) -> datum.score ).reverse().slice(0, 2)
+          for d in _.sortBy(data, (datum) -> datum.num_comments ).reverse().slice(0, 2)
             res.send "https://www.reddit.com#{d.permalink}"
 
       for url in Array.from(getUrls(res.message.text))
