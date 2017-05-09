@@ -42,7 +42,15 @@ module.exports = (robot) ->
           for d in _.sortBy(data, (datum) -> datum.num_comments ).reverse().slice(0, 2)
             res.send "https://www.reddit.com#{d.permalink}"
 
-      for url in Array.from(getUrls(res.message.text))
+      # Reddit matching is very specific, so don't want to mangle too much.
+      # See: https://github.com/sindresorhus/normalize-url
+      urlNormalizationOpts =
+        normalizeProtocol: false,
+        removeTrailingSlash: false,
+        stripWWW: false,
+
+      for url in Array.from(getUrls(res.message.text, urlNormalizationOpts))
+        console.log url
         client._get({uri: 'api/info', qs:{url: url}})
           .then(sayResults)
           .catch(console.error)
