@@ -40,7 +40,7 @@ module.exports = (robot) ->
         if data.length > 0
           res.send "Found public Reddit threads:"
           for d in _.sortBy(data, (datum) -> datum.score ).reverse().slice(0, 2)
-            res.send "#{d.score} ⇵ https://www.reddit.com#{d.permalink} (#{d.num_comments} comments)"
+            res.send "https://www.reddit.com#{d.permalink}"
 
       for url in Array.from(getUrls(res.message.text))
         client._get({uri: 'api/info', qs:{url: url}})
