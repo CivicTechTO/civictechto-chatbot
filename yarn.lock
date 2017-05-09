@@ -140,6 +140,10 @@ coffee-script@1.6.3, coffee-script@~1.6:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.6.3.tgz#6355d32cf1b04cdff6b484e5e711782b2f0c39be"
 
+coffee-script@^1.12.5:
+  version "1.12.5"
+  resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.12.5.tgz#809f4585419112bbfe46a073ad7543af18c27346"
+
 coffee-script@~1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.9.3.tgz#596e6e83fcfcb67c5964ab70d444beff0ac04ac7"

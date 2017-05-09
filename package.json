@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "coffee-script": "^1.12.5",
     "get-urls": "^7.0.0",
     "hubot": "^2.18.0",
     "hubot-cfa-brigade-checkin": "^1.0.4",
