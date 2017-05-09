@@ -1,5 +1,6 @@
 # Description:
-#   Watch for links and post reddit threads if exist.
+#   Watch for links and search for reddit posts about them.
+#   If they exist, the top 2 most commented threads are linked.
 #
 # Configuration:
 #   HUBOT_REDDIT_USERNAME
@@ -38,7 +39,7 @@ module.exports = (robot) ->
 
       sayResults = (data) ->
         if data.length > 0
-          res.send "Found public Reddit threads:"
+          res.send "Yay! I found some Reddit conversations about the link shared above."
           for d in _.sortBy(data, (datum) -> datum.num_comments ).reverse().slice(0, 2)
             res.send "https://www.reddit.com#{d.permalink}"
 
