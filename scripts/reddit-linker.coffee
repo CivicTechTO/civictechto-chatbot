@@ -62,7 +62,7 @@ module.exports = (robot) ->
           num_links_in_reply = 1
           urls = ("https://www.reddit.com#{link.permalink}" for link in links.slice(0, num_links_in_reply))
 
-          reply = ["Yay! I found some Reddit conversations about the link shared above."].concat urls
+          reply = ["Yay! I found a Reddit conversation about the link shared above."].concat urls
           res.send reply.join("\n")
 
       # Reddit matching is very specific, so don't want to mangle too much.
