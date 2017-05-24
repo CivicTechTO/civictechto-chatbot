@@ -1,6 +1,9 @@
 # Description:
-#   Watch for links and search for reddit posts about them.
-#   If they exist, the top 2 most commented threads are linked.
+#   Watch for links and search for top-commented reddit post about them,
+#   favouring toronto subreddits.
+#
+#   Any link from toronto subreddits are posted, but links from other
+#   subreddits must have 10 comments.
 #
 # Configuration:
 #   HUBOT_REDDIT_USERNAME
@@ -37,13 +40,30 @@ module.exports = (robot) ->
         password: config.password,
       )
 
-      sayResults = (data) ->
-        if data.length > 0
-          output = []
-          output.push "Yay! I found some Reddit conversations about the link shared above."
-          for d in _.sortBy(data, (datum) -> datum.num_comments ).reverse().slice(0, 2)
-            output.push "https://www.reddit.com#{d.permalink}"
-          res.send output.join "\n"
+      sortByCommentsWithMin = (links, min_comments) ->
+        links = _.filter(links, (link) -> link.num_comments >= min_comments )
+        links = _.sortBy(links, (link) -> link.num_comments ).reverse()
+        return links
+
+      sayResults = (links) ->
+        toronto_links = _.filter(links, (link) -> /toronto/i.test link.subreddit.display_name)
+        if toronto_links.length > 0
+          links = toronto_links
+          # if it's in a toronto subreddit, doesn't need comments
+          min_comments = 0
+        else
+          # minimum that non-toronto subreddits require
+          min_comments = 10
+
+        links = sortByCommentsWithMin(links, min_comments)
+
+        if links.length > 0
+          # how many links we want to drop in chat
+          num_links_in_reply = 1
+          urls = ("https://www.reddit.com#{link.permalink}" for link in links.slice(0, num_links_in_reply))
+
+          reply = ["Yay! I found some Reddit conversations about the link shared above."].concat urls
+          res.send reply.join("\n")
 
       # Reddit matching is very specific, so don't want to mangle too much.
       # See: https://github.com/sindresorhus/normalize-url
