@@ -39,9 +39,11 @@ module.exports = (robot) ->
 
       sayResults = (data) ->
         if data.length > 0
-          res.send "Yay! I found some Reddit conversations about the link shared above."
+          output = []
+          output.push "Yay! I found some Reddit conversations about the link shared above."
           for d in _.sortBy(data, (datum) -> datum.num_comments ).reverse().slice(0, 2)
-            res.send "https://www.reddit.com#{d.permalink}"
+            output.push "https://www.reddit.com#{d.permalink}"
+          res.send output.join "\n"
 
       # Reddit matching is very specific, so don't want to mangle too much.
       # See: https://github.com/sindresorhus/normalize-url
