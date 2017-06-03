@@ -26,13 +26,14 @@
 
 _ = require "underscore"
 Twit = require "twit"
+list = process.env.HUBOT_TWITTER_COUNCILLOR_LIST_SLUG.split('/')
 config =
   consumer_key: process.env.HUBOT_TWITTER_CONSUMER_KEY
   consumer_secret: process.env.HUBOT_TWITTER_CONSUMER_SECRET
   access_token: process.env.HUBOT_TWITTER_ACCESS_TOKEN
   access_token_secret: process.env.HUBOT_TWITTER_ACCESS_TOKEN_SECRET
-  list_owner: process.env.HUBOT_TWITTER_COUNCILLOR_LIST_SLUG.split('/')[0]
-  list_slug: process.env.HUBOT_TWITTER_COUNCILLOR_LIST_SLUG.split('/')[1]
+  list_slug: list.pop()
+  list_owner: list.pop()
 
 module.exports = (robot) ->
   twit = undefined
