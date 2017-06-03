@@ -1,4 +1,4 @@
-# Toby Chat Bot Changelog
+# Toby Chatbot Changelog
 
 All future user-facing changes to toby, the chatbot that lives in the
 CivicTech Toronto slack team, will be listed here.
