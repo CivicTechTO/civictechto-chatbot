@@ -80,7 +80,7 @@ module.exports = (robot) ->
         stripWWW: false,
 
       for url in Array.from(getUrls(res.message.text, urlNormalizationOpts))
-        console.log url
+        robot.logger.info "Detected link to check reddit for: #{url}"
         client._get({uri: 'api/info', qs:{url: url}})
           .then(sayResults)
           .catch(console.error)
