@@ -1,4 +1,3 @@
-# https://github.com/CivicTechTO/hubot-toby/blob/master/CHANGELOG.md
 # Description:
 #   Show the hubot changelog on GitHub.
 #
