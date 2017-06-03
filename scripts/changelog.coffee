@@ -16,4 +16,5 @@
 
 module.exports = (robot) ->
   robot.respond /changelog/i, (msg) ->
-    msg.send "Here's a list of recent changes to my programming: https://github.com/CivicTechTO/hubot-toby/blob/master/CHANGELOG.md#readme"
+    msg.send """Here's a list of recent changes to my programming:
+https://github.com/CivicTechTO/hubot-toby/blob/master/CHANGELOG.md#readme"""
