@@ -15,3 +15,5 @@ CivicTech Toronto slack team, will be listed here.
   - Previously linked top 2, which was seen as too noisy.
 - **`reddit-linker`**: Ignores threads with under 10 comments.
   - Exempts r/toronto, which gets priority for being local even if under that.
+- **`changelog`**: Added script.
+  - To show how hubot is changing.
