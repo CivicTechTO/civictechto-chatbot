@@ -63,7 +63,14 @@ module.exports = (robot) ->
           urls = ("https://www.reddit.com#{link.permalink}" for link in links.slice(0, num_links_in_reply))
 
           reply = ["Yay! I found a Reddit conversation about the link shared above."].concat urls
-          res.send reply.join("\n")
+          # Start thread if in channel
+          if not res.message.thread_ts?
+            # in channel
+            res.send {thread_ts: res.message.id, text: reply.join("\n")}
+          else
+            # in a thread already
+            res.send reply.join("\n")
+
 
       # Reddit matching is very specific, so don't want to mangle too much.
       # See: https://github.com/sindresorhus/normalize-url
