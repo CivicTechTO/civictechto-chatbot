@@ -15,6 +15,7 @@
     "hubot": "^2.18.0",
     "hubot-cfa-brigade-checkin": "^1.0.4",
     "hubot-giphy-gifme": "https://github.com/patcon/hubot-giphy-gifme/archive/redemption.tar.gz",
+    "hubot-google-auth": "https://github.com/aaaschmitt/hubot-google-auth.git",
     "hubot-help": "^0.1.3",
     "hubot-heroku-keepalive": "^1.0.2",
     "hubot-redis-brain": "0.0.3",

@@ -16,28 +16,44 @@
 
 Url = require 'url'
 request = require 'request'
-google = require 'googleapis'
 
-calendar = google.calendar 'v3'
-globalError
+HubotGoogleAuth = require 'hubot-google-auth'
+auth = {}
 
-EVENT_PARSER_BASE_URL='https://event-metadata-parser.herokuapp.com/'
+EVENT_PARSER_BASE_URL = 'https://event-metadata-parser.herokuapp.com/'
 
 config =
-  google_email: process.env.HUBOT_GOOGLE_API_EMAIL
-  google_key: process.env.HUBOT_GOOGLE_API_KEY
-  google_scopes: ["https://www.googleapis.com/auth/analytics.readonly"]
+  client_id: process.env.HUBOT_GOOGLE_CLIENT_ID
+  client_secret: process.env.HUBOT_GOOGLE_CLIENT_SECRET
+  scope: "https://www.googleapis.com/auth/calendar"
+  calendar_id: process.env.HUBOT_GCAL_ID
+
 
 module.exports = (robot) ->
-  try
-    oauth2Client = new google.auth.JWT(config.google_email, null, config.google_key, config.google_scopes, null)
-  catch err
-    globalError = "Error on load - check your envvars HUBOT_GOOGLE_API_EMAIL and HUBOT_GOOGLE_API_KEY."
+  robot.brain.on 'loaded', ->
+    auth = new HubotGoogleAuth "GoogleCalendar", config.client_id, config.client_secret, "http://localhost:2222", config.scope, robot.brain
+
+  robot.respond /set code (.+)/i, (msg) ->
+    code = msg.match[1]
+    auth.setCode code, (err, resp) ->
+      if err
+        msg.send "Could not obtain tokens with code: #{code}"
+        return
+
+      msg.send "Code successfully set. Tokens now stored in brain for service: #{auth.serviceName}"
+
+  robot.respond /show tokens/i, (msg) ->
+    tokens = auth.getTokens()
+    if !tokens.token
+      msg.send "No tokens found"
+      msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
+      msg.send "Then use the command @toby set code <code>"
+      return
+
+    for k,v of tokens
+      msg.send "#{k}: #{v}"
 
   robot.respond /gcal add (.+)/i, (msg) ->
-    if globalError
-      return msg.reply globalError
-
     url = Url.parse msg.match[1]
     if not /eventbrite/i.test url.host
       msg.send "We can only read from EventBrite right now... sorry!"
@@ -46,8 +62,45 @@ module.exports = (robot) ->
     data_url = "#{EVENT_PARSER_BASE_URL}/#{url.href}"
     request data_url, (err, res, body) ->
       event = JSON.parse body
-      msg.send "Added event to community calendar: http://civictech.ca/calendar/"
-      if robot.adapter.constructor.name == 'SlackBot'
-        robot.adapter.client.web.reactions.add('+1', {channel: msg.message.room, timestamp: msg.message.id})
-        robot.adapter.client.web.reactions.add('question', {channel: msg.message.room, timestamp: msg.message.id})
+
+      auth.validateToken (err, resp) ->
+        if err
+          console.log err
+          return
+
+        calendar = auth.google.calendar('v3')
+        calendar.events.list {calendarId: config.calendar_id, q: event.url}, (err, res) ->
+          if err
+            msg.send "ERROR: could not search for existing event: #{err}"
+            return
+
+          if res.items.length > 0
+            console.log res.items[0].start
+            start = res.items[0].start
+            start = if start.date? then start.date else start.dateTime
+            start = new Date(start).toDateString()
+            msg.send "Oops! It appears this is already in the calendar as '#{res.items[0].summary}' on #{start}"
+            return
+
+          data =
+            calendarId: config.calendar_id
+            resource:
+              summary: event.title
+              description: event.url
+              location: event.location
+              start:
+                dateTime: event.start_time
+              end:
+                dateTime: event.end_time
+
+          calendar.events.insert data, (err, res) ->
+            if err
+              msg.send "ERROR: could not create event: #{err}"
+              return
+
+            msg.send "Added '#{event.title}' to community calendar: http://civictech.ca/calendar/"
+
+            if robot.adapter.constructor.name == 'SlackBot'
+              robot.adapter.client.web.reactions.add('+1', {channel: msg.message.room, timestamp: msg.message.id})
+              robot.adapter.client.web.reactions.add('question', {channel: msg.message.room, timestamp: msg.message.id})
 
