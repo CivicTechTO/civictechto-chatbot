@@ -19,3 +19,6 @@ CivicTech Toronto slack team, will be listed here.
     - To show how hubot is changing.
 1. **`reddit-linker`**: Force replies into threads.
     - toby will no longer reply in channel.
+1. **`calendar-add`**: Added script.
+    - Any community member can now add EventBrite events to the
+      community calendar.
