@@ -1,6 +1,9 @@
 # Description:
 #   Allow users to add events to a shared calendar via links.
 #
+#   It depends on a tiny app called `event-metadata-parser` in order to extract
+#   event data from webpages: https://event-metadata-parser.herokuapp.com/~
+#
 # Dependencies:
 #   googleapis
 #   request
