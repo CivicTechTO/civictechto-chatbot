@@ -9,7 +9,7 @@
 #   None.
 #
 # Commands:
-#   hubot gcal add <url> - Add event url to community calendar
+#   hubot gcal add <url> - Add event url to community calendar (Supports: EventBrite)
 #
 # Author:
 #   patcon
@@ -42,16 +42,13 @@ module.exports = (robot) ->
 
       msg.send "Code successfully set. Tokens now stored in brain for service: #{auth.serviceName}"
 
-  robot.respond /show tokens/i, (msg) ->
+  robot.respond /check tokens/i, (msg) ->
     tokens = auth.getTokens()
     if !tokens.token
       msg.send "No tokens found"
       msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
       msg.send "Then use the command @toby set code <code>"
       return
-
-    for k,v of tokens
-      msg.send "#{k}: #{v}"
 
   robot.respond /gcal add (.+)/i, (msg) ->
     url = Url.parse msg.match[1]
