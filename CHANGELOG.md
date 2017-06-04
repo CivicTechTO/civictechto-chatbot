@@ -22,3 +22,6 @@ CivicTech Toronto slack team, will be listed here.
 1. **`calendar-add`**: Added script.
     - Any community member can now add EventBrite events to the
       community calendar.
+    - Also seeds the post with a :+1: and :question: reaction emoji, so
+      people can express support or concern (in case the event doesn't
+      seem to be a fit for the calendar)
