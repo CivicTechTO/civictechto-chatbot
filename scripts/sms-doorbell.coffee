@@ -9,16 +9,13 @@ module.exports = (robot) ->
     room_priv='G08V58H6Y' #organizing-priv
 
     bot_msg_open = """
-    @here there's someone at the door!
-    Someone texted our doorbell, 780-652-2649 (780-6LAB-6IX):
+    @here there's someone at the door! Someone texted our doorbell, 780-652-2649 (780-6LAB-6IX):
     > #{sms_msg}
-
     (Please use a reaction emoji if you're heading to help.)
     """
 
     bot_msg_priv = """
     Here's the phone number that texted our doorbell: #{from}
-
     (See #organizing-open for full context.)
     """
 
