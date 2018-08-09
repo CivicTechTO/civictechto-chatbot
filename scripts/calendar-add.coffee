@@ -33,8 +33,7 @@ config =
 
 
 module.exports = (robot) ->
-  robot.brain.on 'loaded', ->
-    auth = new HubotGoogleAuth "GoogleCalendar", config.client_id, config.client_secret, "http://localhost:2222", config.scope, robot.brain
+  auth = new HubotGoogleAuth "GoogleCalendar", config.client_id, config.client_secret, "http://localhost:2222", config.scope, robot.brain
 
   robot.respond /set code (.+)/i, (msg) ->
     code = msg.match[1]
@@ -54,6 +53,11 @@ module.exports = (robot) ->
       return
 
   robot.respond /gcal add (.+)/i, (msg) ->
+
+    # Thread the bot response if not in thread already
+    if not msg.message.thread_ts
+      msg.message.thread_ts = msg.message.id
+
     url = Url.parse msg.match[1]
     if not /eventbrite/i.test url.host
       msg.send "We can only read from EventBrite right now... sorry!"
