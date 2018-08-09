@@ -106,5 +106,4 @@ module.exports = (robot) ->
 
             if robot.adapter.constructor.name == 'SlackBot'
               robot.adapter.client.web.reactions.add('+1', {channel: msg.message.room, timestamp: msg.message.id})
-              robot.adapter.client.web.reactions.add('question', {channel: msg.message.room, timestamp: msg.message.id})
 
