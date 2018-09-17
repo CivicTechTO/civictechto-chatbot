@@ -33,7 +33,8 @@ config =
 
 
 module.exports = (robot) ->
-  auth = new HubotGoogleAuth "GoogleCalendar", config.client_id, config.client_secret, "http://localhost:2222", config.scope, robot.brain
+  robot.brain.on 'loaded', ->
+    auth = new HubotGoogleAuth "GoogleCalendar", config.client_id, config.client_secret, "http://localhost:2222", config.scope, robot.brain
 
   robot.respond /set code (.+)/i, (msg) ->
     code = msg.match[1]
