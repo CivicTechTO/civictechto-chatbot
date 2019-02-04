@@ -56,7 +56,7 @@ module.exports = (robot) ->
       # Thread reply on Slack
       if robot.adapterName == 'slack'
         if not !!res.message.thread_ts
-          thread_ts = res.message.rawMessage.ts
+          res.message.thread_ts = res.message.rawMessage.ts
 
       if not url
         res.send "No quicklink found for that key."
@@ -73,13 +73,9 @@ module.exports = (robot) ->
           as_user: true
 
         # TODO: Figure out why ephemeral messages don't come through when threaded
-        #if thread_ts
-        #  payload.thread_ts = res.message.rawMessage.ts
         web.chat.postEphemeral payload
         return
 
-      if thread_ts
-          res.message.thread_ts = res.message.rawMessage.ts
       res.send url
       # TODO: Resolve redirects and parse from url, which will allow shortlink to be used.
       # TODO: Consider using a link button: https://api.slack.com/docs/message-attachments#link_buttons
