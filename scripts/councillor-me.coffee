@@ -26,7 +26,8 @@
 
 _ = require "underscore"
 Twit = require "twit"
-list = process.env.HUBOT_TWITTER_COUNCILLOR_LIST_SLUG.split('/')
+list = process.env.HUBOT_TWITTER_COUNCILLOR_LIST_SLUG
+list = list && list.split('/') || []
 config =
   consumer_key: process.env.HUBOT_TWITTER_CONSUMER_KEY
   consumer_secret: process.env.HUBOT_TWITTER_CONSUMER_SECRET
