@@ -593,6 +593,11 @@ generate-object-property@^1.1.0:
   dependencies:
     is-property "^1.0.0"
 
+get-sheet-done@*:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/get-sheet-done/-/get-sheet-done-0.1.5.tgz#ced776e389425a99644f3b42de00e227e734ff67"
+  integrity sha512-fV4VT+8Z4zCKWMAsIcVed72BOJ4oFeyNzFd6CLW5e7sIA8wZPrTjif9wqXTbePv6U7ufowDQZ0U53R7YE1qF6w==
+
 get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
@@ -753,12 +758,6 @@ hubot-cfa-brigade-checkin@^1.0.4:
   resolved "https://github.com/patcon/hubot-giphy-gifme/archive/redemption.tar.gz#94e37bfa38dd324bcb3bcfe1b953687fd3bd60a0"
   dependencies:
     coffee-script "~1.6"
-
-hubot-google-auth@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/hubot-google-auth/-/hubot-google-auth-1.2.0.tgz#361d9941e3038d488f97a8c4673380c239a52400"
-  dependencies:
-    googleapis "^2.1.7"
 
 "hubot-google-auth@https://github.com/aaaschmitt/hubot-google-auth.git":
   version "1.2.0"
@@ -1069,6 +1068,11 @@ negotiator@0.5.3:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+node-fetch@*:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
+  integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
 
 node-forge@^0.7.1:
   version "0.7.1"

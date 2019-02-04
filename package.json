@@ -11,6 +11,7 @@
   "dependencies": {
     "coffee-script": "^1.12.5",
     "get-urls": "^7.0.0",
+    "get-sheet-done": "*",
     "googleapis": "^19.0.0",
     "hubot": "^2.18.0",
     "hubot-cfa-brigade-checkin": "^1.0.4",
@@ -20,6 +21,7 @@
     "hubot-heroku-keepalive": "^1.0.2",
     "hubot-redis-brain": "0.0.3",
     "hubot-slack": "^4.3.4",
+    "node-fetch": "*",
     "snoowrap": "^1.13.0",
     "twit": "^2.2.3",
     "underscore": "^1.8.3"
