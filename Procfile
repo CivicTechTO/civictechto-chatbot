@@ -1,1 +1,1 @@
-web: node_modules/.bin/hubot --adapter slack $PORT
+web: bin/hubot --adapter slack $PORT
