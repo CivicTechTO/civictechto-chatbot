@@ -27,11 +27,16 @@ config =
 URL_REGEXP = /((https?|ftp):\/\/|www\.)[^\s\/$.?#].[^\s]*/i
 
 module.exports = (robot) ->
+  # Abort if not configured
+  if not config.app_secret
+    return
+
   robot.listen(
     (message) ->
       if typeof(message.text) == 'string'
         getUrls(message.text).size > 0
     (res) ->
+
       client = new snoowrap(
         userAgent: 'github.com/civictechto/hubot-toby',
         clientId: config.app_id,
