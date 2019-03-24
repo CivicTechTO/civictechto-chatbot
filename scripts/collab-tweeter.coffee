@@ -13,6 +13,7 @@
 #   HUBOT_RETWEET_API_SECRET
 #   HUBOT_RETWEET_ACCESS_TOKEN
 #   HUBOT_RETWEET_ACCESS_TOKEN_SECRET
+#   HUBOT_RETWEET_VOTE_THRESHOLD (default: 3)
 #
 # Author:
 #   patcon@github
@@ -28,6 +29,7 @@ config =
   api_secret: process.env.HUBOT_RETWEET_API_SECRET
   access_token: process.env.HUBOT_RETWEET_ACCESS_TOKEN
   access_token_secret: process.env.HUBOT_RETWEET_ACCESS_TOKEN_SECRET
+  vote_threshold: parseInt(process.env.HUBOT_RETWEET_VOTE_THRESHOLD, 10) or 3
 
 EMOJI_FLAG = 'triangular_flag_on_post'
 EMOJI_TWEET = 'bird'
@@ -62,7 +64,6 @@ module.exports = (robot) ->
       console.log data
 
   web = robot.adapter.client.web
-  threshold_count = 1
 
   robot.react (res) ->
     if res.message.item.type == "message" and not res.message.item.thread_ts? and res.message.reaction in [EMOJI_TWEET, EMOJI_FLAG]
@@ -89,7 +90,7 @@ module.exports = (robot) ->
 
           # TODO: Delete RT when goes back below threshold.
           # TODO: Delete tweet if flag set after.
-          if vote_count == threshold_count
+          if vote_count == config.vote_threshold
             console.log "Do a retweet!"
 
           robot.logger.debug "flags: #{flag_count}"
@@ -160,7 +161,7 @@ module.exports = (robot) ->
 
               > #{tweet_content}
 
-              To *retweet* this from <https://twitter.com/#{twitter_account}|@#{twitter_account}>, click the :#{EMOJI_TWEET}: reaction -- when there are #{threshold_count} more reactions (#{threshold_count+1} total), we'll RT it.
+              To *retweet* this from <https://twitter.com/#{twitter_account}|@#{twitter_account}>, click the :#{EMOJI_TWEET}: reaction -- when there are #{config.vote_threshold} more reactions (#{config.vote_threshold+1} total), we'll RT it.
 
               (To _prevent_ a RT, click :#{EMOJI_FLAG}:)"""
               res.send {thread_ts: res.message.id, text: reply, unfurl_links: false, unfurl_media: false}
