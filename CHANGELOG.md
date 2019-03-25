@@ -25,3 +25,11 @@ CivicTech Toronto slack team, will be listed here.
     - Also seeds the post with a :+1: and :question: reaction emoji, so
       people can express support or concern (in case the event doesn't
       seem to be a fit for the calendar)
+1. **`sms-doorbell`**: Split notification for private details.
+    - Notifies public channel of ring, but only drop phone in private
+      channel.
+1. **`quicklinks`**: Added script.
+    - Allow looking up !quicklinks from shortlink spreadsheet.
+1. **`calendar-add`**: Documentation.
+    - Cleaned up response message and added link to script repo in
+      message.
