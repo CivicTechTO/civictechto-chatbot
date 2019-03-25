@@ -103,7 +103,12 @@ module.exports = (robot) ->
               msg.send "ERROR: could not create event: #{err}"
               return
 
-            msg.send {unfurl_links: false, text: "Added '#{event.title}' to <http://civictech.ca/calendar/|community calendar>."}
+            msg.send
+              unfurl_links: false
+              unfurl_media: false
+              text: """Added '#{event.title}' to <http://civictech.ca/calendar/|community calendar>.
+
+              <https://github.com/CivicTechTO/hubot-toby/blob/master/README.md#calendar-addcoffee|:information_source: About this message>"""
 
             if robot.adapter.constructor.name == 'SlackBot'
               robot.adapter.client.web.reactions.add('+1', {channel: msg.message.room, timestamp: msg.message.id})
