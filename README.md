@@ -24,6 +24,14 @@ https://github.com/CivicTechTO/event-metadata-parser
 For now, this service only knows how to make sense of EventBrite pages,
 but it could be improved to cover other platforms.
 
+### `collab-tweeter.coffee`
+
+This script watches for Twitter links in top-level channels, and offered
+to RT from organizational account
+
+![screenshot of chat bot offering to tweet](/docs/collab-tweeter-screenshot.png)
+
+
 ### `quicklink-gsheet-lookup.coffee`
 
 This bot command recognizes messages of the format `!keyword` and looks
