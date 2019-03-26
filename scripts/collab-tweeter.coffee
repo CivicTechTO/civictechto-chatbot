@@ -9,10 +9,10 @@
 #   "underscore": "*"
 #
 # Configuration:
-#   HUBOT_RETWEET_API_KEY
-#   HUBOT_RETWEET_API_SECRET
-#   HUBOT_RETWEET_ACCESS_TOKEN
-#   HUBOT_RETWEET_ACCESS_TOKEN_SECRET
+#   HUBOT_TWITTER_CONSUMER_KEY
+#   HUBOT_TWITTER_CONSUMER_SECRET
+#   HUBOT_TWITTER_ACCESS_TOKEN
+#   HUBOT_TWITTER_ACCESS_TOKEN_SECRET
 #   HUBOT_RETWEET_VOTE_THRESHOLD (default: 3)
 #
 # Author:
@@ -25,14 +25,15 @@ Twitter = require 'twitter'
 Twit = require 'twit'
 
 config =
-  api_key: process.env.HUBOT_RETWEET_API_KEY
-  api_secret: process.env.HUBOT_RETWEET_API_SECRET
-  access_token: process.env.HUBOT_RETWEET_ACCESS_TOKEN
-  access_token_secret: process.env.HUBOT_RETWEET_ACCESS_TOKEN_SECRET
+  api_key: process.env.HUBOT_TWITTER_CONSUMER_KEY
+  api_secret: process.env.HUBOT_TWITTER_CONSUMER_SECRET
+  access_token: process.env.HUBOT_TWITTER_ACCESS_TOKEN
+  access_token_secret: process.env.HUBOT_TWITTER_ACCESS_TOKEN_SECRET
   vote_threshold: parseInt(process.env.HUBOT_RETWEET_VOTE_THRESHOLD, 10) or 3
 
 EMOJI_FLAG = 'triangular_flag_on_post'
 EMOJI_TWEET = 'bird'
+EMOJI_DONE = 'white_check_mark'
 
 module.exports = (robot) ->
   retweet = (id) ->
@@ -47,8 +48,6 @@ module.exports = (robot) ->
           reject(data)
         else
           resolve(data)
-
-  console.log config
 
   T = new Twit(
     consumer_key: config.api_key
@@ -69,10 +68,10 @@ module.exports = (robot) ->
     if res.message.item.type == "message" and not res.message.item.thread_ts? and res.message.reaction in [EMOJI_TWEET, EMOJI_FLAG]
       # Get the exact message to process text and reactions.
       web.conversations.history res.message.item.channel, {latest: res.message.item.ts, limit: 1, inclusive: true}
-        .then (res) ->
+        .then (resp) ->
           # TODO check for tweets in text
           # TODO: Do sanity check against response message from toby, to ensure twitter link wasn't changed.
-          message = res.messages[0]
+          message = resp.messages[0]
           flags = _.filter(message.reactions, (reaction) -> reaction.name == EMOJI_FLAG)
           votes = _.filter(message.reactions, (reaction) -> reaction.name == EMOJI_TWEET)
           # If we don't have content for both, skip
@@ -85,53 +84,45 @@ module.exports = (robot) ->
 
           # Abort if any flags.
           if flag_count > 0
-            console.log "Flag is set. Aborting retweet flow."
+            robot.logger.info "Flag is set. Aborting retweet flow."
             return
 
           # TODO: Delete RT when goes back below threshold.
           # TODO: Delete tweet if flag set after.
           if vote_count == config.vote_threshold
-            console.log "Do a retweet!"
+            # TODO: Implement actual tweeting logic.
+            # If you are reading then, then you now know that there is no
+            # automation yet. Tweets are done manually by @patcon until he sees
+            # that this is worth actually implementing in code :)
+            res.send {thread_ts: res.message.item.ts, text: "Yay! We'll RT this soon!"}
+            web.reactions.add(EMOJI_DONE, {channel: res.message.item.channel, timestamp: res.message.item.ts})
 
           robot.logger.debug "flags: #{flag_count}"
           robot.logger.debug "votes: #{vote_count}"
 
       robot.logger.info "#{res.message.type} reaction #{res.message.reaction}"
 
+  isCandidate = (message) ->
+    # Abort if empty.
+    if not message.text
+      return false
+
+    # Abort if threaded.
+    if message.rawMessage.thread_ts?
+      return false
+
+    # Abort if no links.
+    if not getUrls(message.text).size > 0
+      return false
+
+    return true
+
   robot.listen(
     (message) ->
-      if message.text and getUrls(message.text).size > 0 and not message.rawMessage.thread_ts?
-        return true
+      return if isCandidate(message) then true else false
     (res) ->
 
-      sayResults = (links) ->
-        toronto_links = _.filter(links, (link) -> /toronto/i.test link.subreddit.display_name)
-        if toronto_links.length > 0
-          links = toronto_links
-          # if it's in a toronto subreddit, doesn't need comments
-          min_comments = 0
-        else
-          # minimum that non-toronto subreddits require
-          min_comments = 10
-
-        links = sortByCommentsWithMin(links, min_comments)
-
-        if links.length > 0
-          # how many links we want to drop in chat
-          num_links_in_reply = 1
-          urls = ("https://www.reddit.com#{link.permalink}" for link in links.slice(0, num_links_in_reply))
-
-          reply = ["Yay! I found a Reddit conversation about the link shared above."].concat urls
-          # Start thread if in channel
-          if not res.message.thread_ts?
-            # in channel
-            res.send {thread_ts: res.message.id, text: reply.join("\n")}
-          else
-            # in a thread already
-            res.send reply.join("\n")
-
-
-      # Reddit matching is very specific, so don't want to mangle too much.
+      # This was used in the reddit linker script. Unsure if still helpful here...
       # See: https://github.com/sindresorhus/normalize-url
       urlNormalizationOpts =
         normalizeProtocol: false,
@@ -157,13 +148,13 @@ module.exports = (robot) ->
 
               tweet_content = t_res.data.text
               twitter_account = 'CivicTechTO'
-              reply = """Ohai, <#{url}|a tweet>!
-
-              > #{tweet_content}
-
-              To *retweet* this from <https://twitter.com/#{twitter_account}|@#{twitter_account}>, click the :#{EMOJI_TWEET}: reaction -- when there are #{config.vote_threshold} more reactions (#{config.vote_threshold+1} total), we'll RT it.
-
-              (To _prevent_ a RT, click :#{EMOJI_FLAG}:)"""
+              reply = "Ohai! To <#{url}|*retweet* this> from
+              <https://twitter.com/#{twitter_account}|@#{twitter_account}>,
+              click the :#{EMOJI_TWEET}: reaction -- when there are
+              #{config.vote_threshold} more reactions
+              (#{config.vote_threshold+1} total), we'll RT it with a day.\n
+              \n
+              (To _prevent_ a RT, click :#{EMOJI_FLAG}:)"
               res.send {thread_ts: res.message.id, text: reply, unfurl_links: false, unfurl_media: false}
 
               # TODO: Figure out how to exit after first true tweet
