@@ -47,6 +47,10 @@ getQuicklink = (key, cb) ->
     cb(null)
 
 module.exports = (robot) ->
+  # Abort if not configured
+  if not robot.adapter.options
+    return
+
   web = new WebClient robot.adapter.options.token
   robot.hear /^!(!)?([a-zA-Z0-9-_]+)/i, (res) ->
     # Private if !! prefix.

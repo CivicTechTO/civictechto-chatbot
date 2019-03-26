@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@slack/client": "*",
     "coffee-script": "^1.12.5",
     "get-sheet-done": "*",
     "get-urls": "^7.0.0",
@@ -22,9 +23,10 @@
     "hubot-redis-brain": "0.0.3",
     "hubot-slack": "^4.6.0",
     "node-fetch": "*",
-    "@slack/client": "*",
+    "q": "^1.5.1",
     "snoowrap": "^1.13.0",
     "twit": "^2.2.3",
+    "twitter": "^1.7.1",
     "underscore": "^1.8.3"
   }
 }
