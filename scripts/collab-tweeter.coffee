@@ -94,7 +94,7 @@ module.exports = (robot) ->
             # If you are reading then, then you now know that there is no
             # automation yet. Tweets are done manually by @patcon until he sees
             # that this is worth actually implementing in code :)
-            res.send {thread_ts: res.message.item.ts, text: "Yay! We'll RT this soon!"}
+            res.send {thread_ts: res.message.item.ts, text: "Yay! We'll RT this soon! cc: @socialmedia"}
             web.reactions.add(EMOJI_DONE, {channel: res.message.item.channel, timestamp: res.message.item.ts})
 
           robot.logger.debug "flags: #{flag_count}"
