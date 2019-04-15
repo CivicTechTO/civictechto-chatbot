@@ -33,3 +33,5 @@ CivicTech Toronto slack team, will be listed here.
 1. **`calendar-add`**: Documentation.
     - Cleaned up response message and added link to script repo in
       message.
+1. **`calendar-add`**: Improved script.
+    - Added ability for command to be used on universe event pages.

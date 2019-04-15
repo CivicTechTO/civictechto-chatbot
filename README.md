@@ -21,8 +21,9 @@ This command allows any member of our Slack team to easily add events to
 This depends on another small service for parsing event data from urls:
 https://github.com/CivicTechTO/event-metadata-parser
 
-For now, this service only knows how to make sense of EventBrite pages,
-but it could be improved to cover other platforms.
+For now, this service only knows how to make sense of events on the
+EventBrite and Universe platforms, but it could be improved to cover
+other platforms.
 
 ### `collab-tweeter.coffee`
 

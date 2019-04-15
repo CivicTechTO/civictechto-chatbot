@@ -60,8 +60,8 @@ module.exports = (robot) ->
       msg.message.thread_ts = msg.message.id
 
     url = Url.parse msg.match[1]
-    if not /eventbrite/i.test url.host
-      msg.send "We can only read from EventBrite right now... sorry!"
+    if not /eventbrite|universe/i.test url.host
+      msg.send "We can only read from EventBrite and Universe right now... sorry!"
       return
 
     data_url = "#{EVENT_PARSER_BASE_URL}/#{url.href}"
