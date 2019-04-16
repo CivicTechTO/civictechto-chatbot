@@ -18,7 +18,7 @@ config =
   base_url: process.env.HUBOT_CIRCLECI_RUNNER_BASE_URL or 'https://circleci-job-runner.herokuapp.com'
 
 module.exports = (robot) ->
-  robot.respond /tasks( list)?/i, (msg) ->
+  robot.respond /tasks( list)?$/i, (msg) ->
     jobs_url = "#{config.base_url}/jobs"
     robot.http(jobs_url)
       .get() (err, res, body) ->
