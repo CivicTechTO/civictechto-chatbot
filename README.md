@@ -77,3 +77,5 @@ and so it's assumed that all tasks are safe to run at any time.
    [4]: https://github.com/CivicTechTO/circleci-job-runner
    [5]: https://github.com/CivicTechTO/civictechto-scripts
    [6]: https://github.com/CivicTechTO/civictechto-scripts/blob/master/.circleci/config.yml
+
+![screenshot of task-runner chatbot command](https://i.imgur.com/yhO1pjx.png)
