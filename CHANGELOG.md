@@ -35,3 +35,6 @@ CivicTech Toronto slack team, will be listed here.
       message.
 1. **`calendar-add`**: Improved script.
     - Added ability for command to be used on universe event pages.
+1. **`task-runner`**: Added script.
+    - Added command to run CircleCI scripted tasks via
+      `civictechto/circleci-job-runner` API app.
