@@ -62,3 +62,18 @@ For Voip.ms documentation on SMS messages, see the "SMS URL Callback"
 notes on [the voip.ms wiki][1].
 
    [1]: https://wiki.voip.ms/article/SMS#Configuring_the_SMS_service
+
+### `task-runner.coffee`
+
+This bot command is used to manually kickstart scripted jobs or tasks,
+which are otherwise usually scheduled to run at certain times. These
+scripts are run by CircleCI, and in our case, are defined in the
+[`CivicTechTO/civictechto-scripts` repo][5] and [accompanying config
+file][6]. The command allows this ability through the use of
+[`CivicTechTO/circleci-job-runner`][4], a small app that offers an API
+for initiating these runs. There is no authentication on these tasks,
+and so it's assumed that all tasks are safe to run at any time.
+
+   [4]: https://github.com/CivicTechTO/circleci-job-runner
+   [5]: https://github.com/CivicTechTO/civictechto-scripts
+   [6]: https://github.com/CivicTechTO/civictechto-scripts/blob/master/.circleci/config.yml
