@@ -79,3 +79,8 @@ and so it's assumed that all tasks are safe to run at any time.
    [6]: https://github.com/CivicTechTO/civictechto-scripts/blob/master/.circleci/config.yml
 
 ![screenshot of task-runner chatbot command](https://i.imgur.com/yhO1pjx.png)
+
+### `organizer-checkin.coffee`
+
+#TODO: Explain special app requirement and setup.
+#SEE: https://stackoverflow.com/questions/44048855/slack-bot-scope-missing-while-making-api-request

@@ -15,7 +15,6 @@ axios = require 'axios'
 config =
   checkin_url: process.env.HUBOT_ORGANIZER_CHECKIN_URL
 
-
 module.exports = (robot) ->
 
   web = robot.adapter.client.web
@@ -27,6 +26,7 @@ module.exports = (robot) ->
         .then (response) ->
           # See: https://stackoverflow.com/a/51218544/504018
           # respond {delete_original: true}
+          # TODO: Link to gsheet and website.
           respond {text: "Thanks! We've updated the check-in data and website!"}
           return
         .catch (error) ->
@@ -34,6 +34,7 @@ module.exports = (robot) ->
           return
 
   robot.respond /run organizer checkin/i, (msg) ->
+    # TODO: Restrict to specific channel for now?
     public_msg = {
       text: ":ctto: Time for the monthly update of the <http://civictech.ca/about-us/organizers/|organizer list on the website>! :tada:",
       unfurl_links: false,
@@ -69,4 +70,4 @@ module.exports = (robot) ->
         members = res.members
         for mid in members
           web.chat.postEphemeral msg.message.room, '', mid, {attachments: [action_attachment]}
-          break
+          break # TODO: Remove this once ready to ask everyone in-channel.
