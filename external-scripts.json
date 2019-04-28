@@ -3,5 +3,6 @@
   "hubot-giphy-gifme",
   "hubot-help",
   "hubot-heroku-keepalive",
+  "hubot-interactive-messages",
   "hubot-redis-brain"
 ]
