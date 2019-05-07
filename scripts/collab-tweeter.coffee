@@ -36,6 +36,8 @@ EMOJI_TWEET = 'bird'
 EMOJI_DONE = 'white_check_mark'
 
 module.exports = (robot) ->
+  if robot.adapterName != 'slack'
+    return
   retweet = (id) ->
     new Promise (resolve, reject) ->
       new Twitter(
