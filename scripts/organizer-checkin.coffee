@@ -11,13 +11,18 @@
 #   patcon
 
 axios = require 'axios'
+{WebClient} = require '@slack/client'
 
 config =
   checkin_url: process.env.HUBOT_ORGANIZER_CHECKIN_URL
+  token: process.env.HUBOT_SLACK_TOKEN_INTERACTIVE
 
 module.exports = (robot) ->
 
-  web = robot.adapter.client.web
+  # NOTE: These might unexpectedly use different versions of the the
+  # @slack/client node SDK, with different function calls!
+  web = robot.adapter.client.web              # Used hubot-slack's @slack/client version.
+  webInteractive = new WebClient config.token # Uses @slack/client defined in package.json.
 
   robot.on 'interactivity-loaded', ->
     robot.setActionHandler /organizer_checkin_.+/, (payload, respond) ->
@@ -65,9 +70,16 @@ module.exports = (robot) ->
         ]
     }
 
-    web.conversations.members(msg.message.room)
+    web.conversations.members msg.message.room
       .then (res) ->
         members = res.members
         for mid in members
-          web.chat.postEphemeral msg.message.room, '', mid, {attachments: [action_attachment]}
+          # Send private messages, not ephemeral.
+          webInteractive.chat.postEphemeral {channel: msg.message.room, text: '', user: mid, attachments: [action_attachment], as_user: true}
+            .then (res) ->
+              console.log res
+            .catch (err) ->
+              console.log err
           break # TODO: Remove this once ready to ask everyone in-channel.
+      .catch (err) ->
+        console.log err
