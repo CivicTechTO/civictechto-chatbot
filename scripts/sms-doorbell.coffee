@@ -33,7 +33,9 @@ module.exports = (robot) ->
   robot.router.get '/doorbell', (req, res) ->
     sms_msg = req.query.message
     phone_re = /(\d+?)(\d{3})(\d{4})$/
-    from = req.query.from.match(phone_re)[1..3].join('-')
+    console.log req.query
+    if req.query.from
+      from = req.query.from.match(phone_re)[1..3].join('-')
 
     if config.channel_open
       bot_msg_open = """
