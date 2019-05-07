@@ -33,7 +33,8 @@ module.exports = (robot) ->
   robot.router.get '/doorbell', (req, res) ->
     sms_msg = req.query.message
     phone_re = /(\d+?)(\d{3})(\d{4})$/
-    console.log req.query
+    console.log req
+    console.log res
     if req.query.from
       from = req.query.from.match(phone_re)[1..3].join('-')
 
