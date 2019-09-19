@@ -1,5 +1,6 @@
 [
   "hubot-cfa-brigade-checkin",
+  "hubot-sms-doorbell",
   "hubot-giphy-gifme",
   "hubot-help",
   "hubot-heroku-keepalive",

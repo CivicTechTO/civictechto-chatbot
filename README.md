@@ -53,15 +53,9 @@ someone texts us. We use this as a doorbell at meetups, so that all
 organizers can easily take responsibility for answering and dealing with
 issues.
 
-It drops the message into a public channel, and the phone number itself
-into a private channel, to protect privacy of texters.
-
-Optionally, if Voip.ms API access is configured, then reaction emoji
-will be relayed back to the texter.
-
-The SMS number is currently managed via Voip.ms, for which we track account access in https://link.civictech.ca/inventory
-
-For **setup documentation** (including voip.ms), see [the SMS Doorbell wiki page](https://github.com/CivicTechTO/hubot-toby/wiki/Script:-SMS-Doorbell)
+It lives in its own code repository, so please see the
+[`civictechto/hubot-sms-doorbell`
+README](https://github.com/civictechto/hubot-sms-doorbell#readme) for full details
 
 ### `task-runner.coffee`
 
