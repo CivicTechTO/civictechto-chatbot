@@ -65,7 +65,7 @@ module.exports = (robot) ->
 
       (This message was created by texting our doorbell at #{config.phone_number}. The sender's number was shared in `#organizing-priv`.)
       """
-      robot.adapter.client.web.chat.postMessage(config.channel_priv, bot_msg_open, {
+      robot.adapter.client.web.chat.postMessage(config.channel_open, bot_msg_open, {
         as_user: true,
         parse: 'full',
         attachments: [
