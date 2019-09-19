@@ -54,11 +54,16 @@ module.exports = (robot) ->
     if req.query.from
       from = req.query.from.match(phone_re)[1..3].join('-')
 
+    extra = if isSmsSendingConfigured() then ", and I'll forward it to the texter" else ''
+
     if config.channel_open
       bot_msg_open = """
-      @here there's someone at the door! Someone texted our doorbell, #{config.phone_number}:
+      @here there's someone at the door! They texted:
       > #{sms_msg}
-      (Please use a reaction emoji if you're heading to help.)
+
+      :raising_hand: Please use any reaction emoji if you're heading to help#{extra}!
+
+      (This message was created by texting our doorbell at #{config.phone_number}. The sender's number was shared in `#organizing-priv`.)
       """
       robot.adapter.client.web.chat.postMessage(config.channel_priv, bot_msg_open, {
         as_user: true,
@@ -74,17 +79,11 @@ module.exports = (robot) ->
     if config.channel_priv
       bot_msg_priv = """
       Here's the phone number that texted our doorbell: #{from}
-      (See #organizing-open for full context.)
+      (Full context in #organizing-open.)
       """
       robot.adapter.client.web.chat.postMessage(config.channel_priv, bot_msg_priv, {
         as_user: true,
         parse: 'full',
-        attachments: [
-          {
-            fallback: '',
-            callback_id: 'hubot_doorbell_caller_' + from.replace(/-/g, ''),
-          }
-        ]
       })
 
     # Voip.ms expects this on successful messages, for their "callback retry"

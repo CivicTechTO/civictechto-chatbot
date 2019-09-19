@@ -38,3 +38,5 @@ CivicTech Toronto slack team, will be listed here.
 1. **`task-runner`**: Added script.
     - Added command to run CircleCI scripted tasks via
       `civictechto/circleci-job-runner` API app.
+1. **`sms-doorbell`**: Added ability to send SMS reply when emoji
+   reaction used on message.
