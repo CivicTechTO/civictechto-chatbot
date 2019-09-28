@@ -1,5 +1,5 @@
 {
-  "name": "hubot-toby",
+  "name": "civictechto-chatbot",
   "version": "1.0.0",
   "description": "A custom hubot chat bot for Civic Tech Toronto",
   "main": "index.js",

@@ -38,7 +38,7 @@ module.exports = (robot) ->
     (res) ->
 
       client = new snoowrap(
-        userAgent: 'github.com/civictechto/hubot-toby',
+        userAgent: 'github.com/civictechto/civictechto-chatbot',
         clientId: config.app_id,
         clientSecret: config.app_secret,
         username: config.username,

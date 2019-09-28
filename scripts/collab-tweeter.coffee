@@ -72,7 +72,7 @@ module.exports = (robot) ->
       web.conversations.history res.message.item.channel, {latest: res.message.item.ts, limit: 1, inclusive: true}
         .then (resp) ->
           # TODO check for tweets in text
-          # TODO: Do sanity check against response message from toby, to ensure twitter link wasn't changed.
+          # TODO: Do sanity check against response message from chatbot, to ensure twitter link wasn't changed.
           message = resp.messages[0]
           flags = _.filter(message.reactions, (reaction) -> reaction.name == EMOJI_FLAG)
           votes = _.filter(message.reactions, (reaction) -> reaction.name == EMOJI_TWEET)

@@ -50,7 +50,7 @@ module.exports = (robot) ->
     if !tokens.token
       msg.send "No tokens found"
       msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
-      msg.send "Then use the command @toby set code <code>"
+      msg.send "Then use the command @#{robot.name} set code <code>"
       return
 
   robot.respond /gcal add (.+)/i, (msg) ->
@@ -108,7 +108,7 @@ module.exports = (robot) ->
               unfurl_media: false
               text: """Added '#{event.title}' to <http://civictech.ca/calendar/|community calendar>.
 
-              <https://github.com/CivicTechTO/hubot-toby/blob/master/README.md#calendar-addcoffee|:information_source: About this message>"""
+              <https://github.com/CivicTechTO/civictechto-chatbot/blob/master/README.md#calendar-addcoffee|:information_source: About this message>"""
 
             if robot.adapter.constructor.name == 'SlackBot'
               robot.adapter.client.web.reactions.add('+1', {channel: msg.message.room, timestamp: msg.message.id})
