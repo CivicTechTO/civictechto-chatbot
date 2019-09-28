@@ -1,6 +1,20 @@
-# Hubot-toby
+<img align="right" src="docs/roo-header.png" height="200" />
 
-This is the chatbot that lives in the Civic Tech Toronto slack team.
+# Roobot: CivicTechTO Chatbot
+
+:wave::vulcan_salute: A friendly chatbot that lives in _Civic Tech Toronto_'s Slack team. :speech_balloon::robot:
+
+## Technologies Used
+
+- [**Coffeescript.**][coffeescript] A little language with syntactic sugar that compiles into JavaScript.
+  - [**Hubot.**][hubot] A chatbot framework for running/creating shared tasks.
+- [**Heroku.**][heroku] A platform for easily deploying applications.
+- [**Slack.**][slack] A user-friendly chat tool for large teams and communities.
+
+   [hubot]: https://hubot.github.com/
+   [coffeescript]: https://coffeescript.org/
+   [heroku]: https://www.heroku.com/what
+   [slack]: https://slack.com/intl/en-ca/help/articles/115004071768-what-is-slack-
 
 ## Commands & Helper Scripts
 
@@ -73,3 +87,17 @@ and so it's assumed that all tasks are safe to run at any time.
    [6]: https://github.com/CivicTechTO/civictechto-scripts/blob/master/.circleci/config.yml
 
 ![screenshot of task-runner chatbot command](https://i.imgur.com/yhO1pjx.png)
+
+## FAQ
+
+### How do a rename this chatbot?
+
+You'll need to change the name in several places, some of which are
+critical :star: and some of which are just to keep things consistent:
+- :star: username of [Slack integration](https://civictechto.slack.com/services/B0M281RPA)
+- name of Heroku app (See https://link.civictech.ca/inventory)
+- this GitHub repo
+  - repo name
+  - url at top of repo (points to heroku app)
+  - optional: screenshots
+  - [`bin/hubot`](/bin/hubot) (used to local testing)
