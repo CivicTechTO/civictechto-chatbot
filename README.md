@@ -21,6 +21,8 @@
 See [`scripts/`](/scripts) for the set of custom commands/scripts
 enabled for our chat bot.
 
+_Note for screenshots: Our chatbot used to be named "toby"._
+
 ### `calendar-add.coffee`
 
 This command allows any member of our Slack team to easily add events to
@@ -95,9 +97,7 @@ and so it's assumed that all tasks are safe to run at any time.
 You'll need to change the name in several places, some of which are
 critical :star: and some of which are just to keep things consistent:
 - :star: username of [Slack integration](https://civictechto.slack.com/services/B0M281RPA)
-- name of Heroku app (See https://link.civictech.ca/inventory)
 - this GitHub repo
-  - repo name
-  - url at top of repo (points to heroku app)
-  - optional: screenshots
+  - README title
   - [`bin/hubot`](/bin/hubot) (used to local testing)
+  - optional: screenshots
