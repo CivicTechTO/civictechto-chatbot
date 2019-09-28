@@ -1,0 +1,7 @@
+- [x] file ticket to resolve Slack bug with updating hubot integration
+- [ ] update Slack hubot integration app
+- [ ] rename github repo: `civictechto-chatbot`
+- [ ] rename heroku app: `civictechto-chatbot`
+- [ ] change url in github repo to https://civictechto-chatbot.herokuapp.com
+- [ ] update heroku app name in link.civictech.ca/inventory
+- [ ] confirm that auto-deploy still works
