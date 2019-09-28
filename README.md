@@ -90,6 +90,12 @@ and so it's assumed that all tasks are safe to run at any time.
 
 ![screenshot of task-runner chatbot command](https://i.imgur.com/yhO1pjx.png)
 
+## Contributing
+
+This app is hosted on the Heroku platform, and configured using their automatic deployment feature.
+
+This means that pushing or merging changes specifically to the `master` branch will make the changes live within several minutes.
+
 ## FAQ
 
 ### How do a rename this chatbot?
