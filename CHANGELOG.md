@@ -1,6 +1,6 @@
-# Toby Chatbot Changelog
+# CivicTechTO Chatbot Changelog
 
-All future user-facing changes to toby, the chatbot that lives in the
+All future user-facing changes to chatbot, the chatbot that lives in the
 CivicTech Toronto slack team, will be listed here.
 
 1. **`reddit-linker`**: Added script.
@@ -9,7 +9,7 @@ CivicTech Toronto slack team, will be listed here.
 1. **`reddit-linker`**: Changed sort type.
     - Now sorts by most commented instead of most upvoted.
 1. **`reddit-linker`**: Added thread support.
-    - Toby now replies in thread if the link was posted there, instead of
+    - Chatbot now replies in thread if the link was posted there, instead of
       in main channel.
 1. **`reddit-linker`**: Links only top reddit thread.
     - Previously linked top 2, which was seen as too noisy.
@@ -18,7 +18,7 @@ CivicTech Toronto slack team, will be listed here.
 1. **`changelog`**: Added script.
     - To show how hubot is changing.
 1. **`reddit-linker`**: Force replies into threads.
-    - toby will no longer reply in channel.
+    - Chatbot will no longer reply in channel.
 1. **`calendar-add`**: Added script.
     - Any community member can now add EventBrite events to the
       community calendar.
@@ -40,3 +40,6 @@ CivicTech Toronto slack team, will be listed here.
       `civictechto/circleci-job-runner` API app.
 1. **`sms-doorbell`**: Added ability to send SMS reply when emoji
    reaction used on message.
+1. **`help-redirect`**: Added a helper so no need to know chatbot name
+   for help url.
+1. Renamed chatbot and uncoupled name in codebase.
