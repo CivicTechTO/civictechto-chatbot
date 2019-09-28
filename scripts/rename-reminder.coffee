@@ -3,6 +3,8 @@
 
 module.exports = (robot) ->
 
-  robot.hear /^@?toby:? (.+)/i, (res) ->
-    res.reply "Ohai! I'm the new toby :wave:"
+  old_name = 'toby'
+  robot.hear ///^@?#{old_name}:? (.+)///i, (res) ->
+    res.message.thread_ts = res.message.id
+    res.send "Ohai! I'm the new #{old_name} :wave:"
     return
