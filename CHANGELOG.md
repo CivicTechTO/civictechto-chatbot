@@ -40,3 +40,6 @@ CivicTech Toronto slack team, will be listed here.
       `civictechto/circleci-job-runner` API app.
 1. **`sms-doorbell`**: Added ability to send SMS reply when emoji
    reaction used on message.
+1. **`help-redirect`**: Added a helper so no need to know chatbot name
+   for help url.
+1. Renamed chatbot and uncoupled name in codebase.
