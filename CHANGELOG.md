@@ -43,3 +43,5 @@ CivicTech Toronto slack team, will be listed here.
 1. **`help-redirect`**: Added a helper so no need to know chatbot name
    for help url.
 1. Renamed chatbot and uncoupled name in codebase.
+1. **`rename-reminder`**: Added a reply when people try to use toby
+   username.
