@@ -107,3 +107,10 @@ critical :star: and some of which are just to keep things consistent:
   - README title
   - [`bin/hubot`](/bin/hubot) (used to local testing)
   - optional: screenshots
+
+### Can I rename the Heroku app?
+
+Yes, but just note that you'll need to update some configuration for our
+SMS doorbell. Specifically, you'll need to re-point our internet
+number's _SMS URL Callback_. Details on this configuration/setup linked from
+[`CivicTechTO/hubot-sms-doorbell`](https://github.com/CivicTechTO/hubot-sms-doorbell/).
