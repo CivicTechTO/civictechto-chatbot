@@ -78,11 +78,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.21.tgz#7e8a0c34cf29f4e17a36e9bd0ea72d45ba03908e"
   integrity sha512-CBgLNk4o3XMnqMc0rhb6lc77IwShMEglz05deDcn2lQxyXEZivfwgYJu7SMha9V5XcrP6qZuevTHV/QrN2vjKQ==
 
-"@types/node@^8.0.7":
-  version "8.10.54"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.54.tgz#1c88eb253ac1210f1a5876953fb70f7cc4928402"
-  integrity sha512-kaYyLYf6ICn6/isAyD4K1MyWWd5Q3JgH6bnMN089LUx88+s4W8GvK9Q6JMBVu5vsFFp7pMdSxdKmlBXwH/VFRg==
-
 "@types/p-cancelable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/p-cancelable/-/p-cancelable-0.3.0.tgz#3e4fcc54a3dfd81d0f5b93546bb68d0df50553bb"
@@ -571,11 +566,9 @@ dashdash@^1.12.0:
     assert-plus "^1.0.0"
 
 data-uri-to-buffer@2:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-2.0.1.tgz#ca8f56fe38b1fd329473e9d1b4a9afcd8ce1c045"
-  integrity sha512-OkVVLrerfAKZlW2ZZ3Ve2y65jgiWqBKsTfUIAFbn8nVbPcCZg6l6gikKlEYv0kXcmzqGm6mFq/Jf2vriuEkv8A==
-  dependencies:
-    "@types/node" "^8.0.7"
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-2.0.2.tgz#d296973d5a4897a5dbe31716d118211921f04770"
+  integrity sha512-ND9qDTLc6diwj+Xe5cdAgVTbLVdXbtxTJRXRhli8Mowuaan+0EJOtdqJ0QCHNSSPyoXGx9HX2/VMnKeC34AChA==
 
 debug@2.6.8:
   version "2.6.8"
@@ -1208,8 +1201,8 @@ hubot-slack@^4.6.0:
     lodash "^4.17.10"
 
 "hubot-sms-doorbell@github:civictechto/hubot-sms-doorbell#master":
-  version "0.0.2"
-  resolved "https://codeload.github.com/civictechto/hubot-sms-doorbell/tar.gz/99fe44c5e0f31fd62994c6045c9e1a8039d78f4f"
+  version "0.0.3"
+  resolved "https://codeload.github.com/civictechto/hubot-sms-doorbell/tar.gz/5d0368ddd43de2a71b2ccd452a02cfb274b69a99"
   dependencies:
     node-emoji "^1.10.0"
     proxy-agent "^3.1.0"
