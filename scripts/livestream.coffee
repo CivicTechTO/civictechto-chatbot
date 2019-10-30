@@ -9,7 +9,9 @@
 #   None
 #
 # Commands:
-#   hubot livestream - Create a YouTube livestream event
+#   hubot livestream - Show livestream instructions
+#   hubot livestream "Hacknight #123 with Maria Taylor: Some topic" - Set the livestream event title
+#   hubot livestream reset - Set a generic event title
 #
 # Author:
 #   patcon@github
@@ -20,15 +22,35 @@ auth = {}
 config =
   client_id: process.env.HUBOT_GOOGLE_CLIENT_ID
   client_secret: process.env.HUBOT_GOOGLE_CLIENT_SECRET
-  stream_name: process.env.HUBOT_YOUTUBE_STREAM_NAME || 'default'
+  video_id: process.env.HUBOT_LIVESTREAM_VIDEO_ID || 'YXfdtsO4f5w'
+  default_title: process.env.HUBOT_LIVESTREAM_DEFAULT_TITLE || 'Civic Hacknight: Presentation'
+  # TODO: Implement support for a second persistent broadcast for pitches.
 
 config.stream_name = config.stream_name.toLowerCase()
+
+DAY_OF_WEEK_TUES = 2
 
 GOOGLE_SCOPES = [
   'https://www.googleapis.com/auth/youtube',
   'https://www.googleapis.com/auth/youtube.force-ssl',
   'https://www.googleapis.com/auth/youtube.upload',
 ]
+
+getNextDayOfWeek = (date, dayOfWeek) =>
+  resultDate = new Date date.getTime()
+  resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7)
+  return resultDate
+
+getNextTuesday = (date) =>
+  return getNextDayOfWeek date, DAY_OF_WEEK_TUES
+
+# See: https://stackoverflow.com/a/16344301/504018
+getDateStamp = (date) =>
+  yearStr = date.getFullYear()
+  monthStr = (date.getMonth() + 1).toString().padStart(2,0)
+  dateStr = date.getDate().toString().padStart(2,0)
+  return "#{yearStr}-#{monthStr}-#{dateStr}"
+
 
 module.exports = (robot) ->
   robot.brain.on 'loaded', ->
@@ -48,82 +70,70 @@ module.exports = (robot) ->
     if !tokens.token
       msg.send "No tokens found"
       msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
-      msg.send "Then use the command @#{robot.name} set code <code>"
+      msg.send "Then use the command @#{robot.name} set youtube code <code>"
       return
 
     msg.send "Tokens already set."
 
   robot.respond /reset tokens/i, (msg)->
-    msg.send "No tokens found"
     msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
-    msg.send "Threaden use the command @hubot set code <code>"
+    msg.send "Then use the command @#{robot.name} set youtube code <code>"
     return
 
-  robot.respond /livestream/i, (msg) ->
+  # See: https://stackoverflow.com/a/3569031/504018
+  pattern = ///
+            livestream(?:\s
+              (")?
+                (.+)
+              \1
+            )?
+            ///i
+  robot.respond pattern, (msg) ->
+    title = msg.match[2]
 
     # Thread the bot response if not in thread already
     if not msg.message.thread_ts
       msg.message.thread_ts = msg.message.id
+
+    event_title = if title == 'reset' then config.default_title else title
 
     auth.validateToken (err, resp) ->
       if err
         console.log err
         return
 
-      console.log resp
+      #console.log resp
 
+      # See: https://developers.google.com/youtube/v3/live/docs/liveBroadcasts
       youtube = auth.google.youtube('v3')
-      youtube.liveBroadcasts.list {part: "id,snippet,status,contentDetails", broadcastStatus: 'upcoming'}, (err, res) ->
+      youtube.liveBroadcasts.list {part: "id,snippet,status,contentDetails", broadcastStatus: 'upcoming', broadcastType: 'persistent'}, (err, res) ->
         if err
-          console.log err
+          robot.logger.error err
           return
-        console.log res.pageInfo
-        console.log res.items[0]
 
-        # TODO: Fetch from meetup
-        meetup =
-          title: "Hacknight #0: Testing"
-          url: "https://www.meetup.com/Civic-Tech-Toronto/events/rhrqhryznbcb/"
-          date: "2019-10-01"
+        matches = res.items.filter (x) -> x.id == config.video_id
 
-        matches = res.items.filter (x) -> x.snippet.description.indexOf meetup.url >= 0
-        if matches.length > 0
-          console.log "found livestream!"
+        if matches.length == 1
+          robot.logger.info "found livestream!"
           video = matches[0]
-          msg.send "The stream is all set up!"
-          msg.send "The video link to share is: #{video.snippet.title} https://youtu.be/#{video.id}"
-          msg.send "1. Log into the Civic Tech Toronto YouTube account: https://link.civictech.ca/passwords"
-          msg.send "2. Go to the YouTube Studio page: https://studio.youtube.com/channel/#{video.snippet.channelId}/livestreaming/dashboard?v=#{video.id}"
-          msg.send "3. Note the 'stream key' and 'stream URL' on that page."
-          msg.send "4. Install the Streamlabs mobile livestreaming app: https://streamlabs.com/mobile-app"
-          msg.send "5. In the app settings, choose the 'Custom RTMP server' as streaming platform, as use the key and url."
+          if event_title
+            video.snippet.title = event_title
+            youtube.liveBroadcasts.update {part: 'id,snippet,status,contentDetails', resource: video}, (err, res) ->
+              if err
+                robot.logger.error err
+                return
+
+              robot.logger.debug res
+              msg.send "Updated livestream title!"
+
+          message = """
+                    Here's how the livestream is set up!
+                    The video link to share is: #{video.snippet.title} https://youtu.be/#{video.id}
+                    1. Log into the Civic Tech Toronto YouTube account: https://link.civictech.ca/passwords
+                    2. Go to the YouTube Studio page: https://studio.youtube.com/channel/#{video.snippet.channelId}/livestreaming/dashboard?v=#{video.id}
+                    3. Note the 'stream key' and 'stream URL' on that page.
+                    4. Install the Streamlabs mobile livestreaming app: https://streamlabs.com/mobile-app
+                    5. In the app settings, choose the 'Custom RTMP server' as streaming platform, and use the key and url.
+                    """
+          msg.send message
           return
-
-        data =
-          snippet: {
-            title: meetup.title,
-            description: meetup.url,
-            scheduledStartTime: "#{meetup.date}T23:00:00.000Z",
-          }
-          status: {privacyStatus: 'unlisted'} # TODO
-
-        # TODO: Get this from envvar human name
-        stream_id = "rHZ-KlM_dHYipdk5K59ysA1569741287601558"
-        youtube.liveBroadcasts.insert part: 'snippet,status', resource: data , (err, res) ->
-          if err
-            console.log err
-            return
-
-          video = res
-
-          youtube.liveBroadcasts.bind part: 'id', id: video.id, streamId: stream_id, (err, res) ->
-            return
-
-          console.log "created livestream!"
-          msg.send "The stream is all set up!"
-          msg.send "The video link to share is: #{video.snippet.title} https://youtu.be/#{video.id}"
-          msg.send "1. Log into the Civic Tech Toronto YouTube account: https://link.civictech.ca/passwords"
-          msg.send "2. Go to the YouTube Studio page: https://studio.youtube.com/channel/#{video.snippet.channelId}/livestreaming/dashboard?v=#{video.id}"
-          msg.send "3. Note the 'stream key' and 'stream URL' on that page."
-          msg.send "4. Install the Streamlabs mobile livestreaming app: https://streamlabs.com/mobile-app"
-          msg.send "5. In the app settings, choose the 'Custom RTMP server' as streaming platform, as use the key and url."
