@@ -105,7 +105,7 @@ module.exports = (robot) ->
               msg.send "Livestream title updated!"
 
           message = """
-                    Woo! Here's *how to run* the livestream: :point_down: :point_down: :point_down:
+                    Woo! Here's *how to run* a bare-bones livestream: :point_down: :point_down: :point_down:
                     :one: *Install* the Streamlabs mobile app: https://streamlabs.com/mobile-app
                     :two: *Ask* for access to our YouTube account.
                     :three: *Open* the YouTube Studio event page: https://studio.youtube.com/channel/#{video.snippet.channelId}/livestreaming/dashboard?v=#{video.id}
