@@ -26,31 +26,11 @@ config =
   default_title: process.env.HUBOT_LIVESTREAM_DEFAULT_TITLE || 'Civic Hacknight: Presentation'
   # TODO: Implement support for a second persistent broadcast for pitches.
 
-config.stream_name = config.stream_name.toLowerCase()
-
-DAY_OF_WEEK_TUES = 2
-
 GOOGLE_SCOPES = [
   'https://www.googleapis.com/auth/youtube',
   'https://www.googleapis.com/auth/youtube.force-ssl',
   'https://www.googleapis.com/auth/youtube.upload',
 ]
-
-getNextDayOfWeek = (date, dayOfWeek) =>
-  resultDate = new Date date.getTime()
-  resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7)
-  return resultDate
-
-getNextTuesday = (date) =>
-  return getNextDayOfWeek date, DAY_OF_WEEK_TUES
-
-# See: https://stackoverflow.com/a/16344301/504018
-getDateStamp = (date) =>
-  yearStr = date.getFullYear()
-  monthStr = (date.getMonth() + 1).toString().padStart(2,0)
-  dateStr = date.getDate().toString().padStart(2,0)
-  return "#{yearStr}-#{monthStr}-#{dateStr}"
-
 
 module.exports = (robot) ->
   robot.brain.on 'loaded', ->
@@ -99,10 +79,8 @@ module.exports = (robot) ->
 
     auth.validateToken (err, resp) ->
       if err
-        console.log err
+        robot.logger.error err
         return
-
-      #console.log resp
 
       # See: https://developers.google.com/youtube/v3/live/docs/liveBroadcasts
       youtube = auth.google.youtube('v3')
@@ -124,7 +102,7 @@ module.exports = (robot) ->
                 return
 
               robot.logger.debug res
-              msg.send "Updated livestream title!"
+              msg.send "Livestream title updated!"
 
           message = """
                     Here's how the livestream is set up!
