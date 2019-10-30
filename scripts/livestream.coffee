@@ -36,7 +36,7 @@ module.exports = (robot) ->
   robot.brain.on 'loaded', ->
     auth = new HubotGoogleAuth "YouTube", config.client_id, config.client_secret, "http://localhost:2222", GOOGLE_SCOPES.join(';'), robot.brain
 
-  robot.respond /set youtube code (.+)/i, (msg) ->
+  robot.respond /set code yt (.+)/i, (msg) ->
     code = msg.match[1]
     auth.setCode code, (err, resp) ->
       if err
@@ -50,14 +50,14 @@ module.exports = (robot) ->
     if !tokens.token
       msg.send "No tokens found"
       msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
-      msg.send "Then use the command @#{robot.name} set youtube code <code>"
+      msg.send "Then use the command @#{robot.name} set code yt <code>"
       return
 
-    msg.send "Tokens already set."
+    msg.send "Tokens already set for youtube."
 
-  robot.respond /reset tokens/i, (msg)->
+  robot.respond /reset token yt/i, (msg)->
     msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
-    msg.send "Then use the command @#{robot.name} set youtube code <code>"
+    msg.send "Then use the command @#{robot.name} set code yt <code>"
     return
 
   # See: https://stackoverflow.com/a/3569031/504018
