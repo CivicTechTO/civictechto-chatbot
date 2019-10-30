@@ -105,13 +105,16 @@ module.exports = (robot) ->
               msg.send "Livestream title updated!"
 
           message = """
-                    Here's how the livestream is set up!
-                    The video link to share is: #{video.snippet.title} https://youtu.be/#{video.id}
-                    1. Log into the Civic Tech Toronto YouTube account: https://link.civictech.ca/passwords
-                    2. Go to the YouTube Studio page: https://studio.youtube.com/channel/#{video.snippet.channelId}/livestreaming/dashboard?v=#{video.id}
-                    3. Note the 'stream key' and 'stream URL' on that page.
-                    4. Install the Streamlabs mobile livestreaming app: https://streamlabs.com/mobile-app
-                    5. In the app settings, choose the 'Custom RTMP server' as streaming platform, and use the key and url.
+                    Woo! Here's *how to run* the livestream: :point_down: :point_down: :point_down:
+                    :one: *Install* the Streamlabs mobile app: https://streamlabs.com/mobile-app
+                    :two: *Ask* for access to our YouTube account.
+                    :three: *Open* the YouTube Studio event page: https://studio.youtube.com/channel/#{video.snippet.channelId}/livestreaming/dashboard?v=#{video.id}
+                    :four: *Note* the _stream key_ and _stream URL_.
+                    :five: Streamlabs app: *Configure* a _Custom RTMP server_ with the above info.
+                    :six: You're all set! Make sure the title is up-to-date, and *start livestreaming!*
+
+                    :bird: The key stuff to share is:
+                    `#{video.snippet.title} https://youtu.be/#{video.id}`
                     """
           msg.send message
           return
