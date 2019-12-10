@@ -21,7 +21,7 @@
 See [`scripts/`](/scripts) for the set of custom commands/scripts
 enabled for our chat bot.
 
-_Note for screenshots: Our chatbot used to be named "toby"._
+_Note for screenshots: Our chatbot was previously named "toby"._
 
 ### `calendar-add.coffee`
 
@@ -89,6 +89,15 @@ and so it's assumed that all tasks are safe to run at any time.
    [6]: https://github.com/CivicTechTO/civictechto-scripts/blob/master/.circleci/config.yml
 
 ![screenshot of task-runner chatbot command](https://i.imgur.com/yhO1pjx.png)
+
+### `livestream.coffee`
+
+![Screenshot of interacting with the livestream command](docs/livestream-screenshot.png)
+
+This command is intended to make it easy for almost anyone to run
+livestreaming. It offers commands for:
+1. assisting with instructions and configuration,
+2. setting the event title on the video
 
 ## Contributing
 

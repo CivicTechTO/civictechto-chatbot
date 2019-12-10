@@ -36,7 +36,7 @@ module.exports = (robot) ->
   robot.brain.on 'loaded', ->
     auth = new HubotGoogleAuth "GoogleCalendar", config.client_id, config.client_secret, "http://localhost:2222", config.scope, robot.brain
 
-  robot.respond /set code (.+)/i, (msg) ->
+  robot.respond /set code gcal (.+)/i, (msg) ->
     code = msg.match[1]
     auth.setCode code, (err, resp) ->
       if err
@@ -52,6 +52,13 @@ module.exports = (robot) ->
       msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
       msg.send "Then use the command @#{robot.name} set code <code>"
       return
+
+    msg.send "Tokens already set for gcal."
+
+  robot.respond /reset token gcal/i, (msg)->
+    msg.send "Please copy the code at this url #{auth.generateAuthUrl()}"
+    msg.send "Then use the command @#{robot.name} set code gcal <code>"
+    return
 
   robot.respond /gcal add (.+)/i, (msg) ->
 
