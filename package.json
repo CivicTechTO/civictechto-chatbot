@@ -16,7 +16,7 @@
     "coffee-script": "^1.12.5",
     "get-sheet-done": "*",
     "get-urls": "^7.0.0",
-    "googleapis": "^19.0.0",
+    "googleapis": "^39.1.0",
     "hubot": "^2.18.0",
     "hubot-cfa-brigade-checkin": "^1.0.4",
     "hubot-giphy-gifme": "https://github.com/patcon/hubot-giphy-gifme/archive/redemption.tar.gz",
